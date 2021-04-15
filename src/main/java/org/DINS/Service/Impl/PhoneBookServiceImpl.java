@@ -19,7 +19,7 @@ public class PhoneBookServiceImpl implements PhoneBookService {
     private Map<Integer,NumberInPhoneBookDto> numberInPhoneBookDtoMap = new HashMap<>();
     private AtomicInteger phoneNumberId = new AtomicInteger();
     private final UserServiceImpl userService;
-    PhoneBooksDto phoneBooksDto = new PhoneBooksDto();
+
 
     @Override
     public List<PhoneBooksDto> getAllPhoneNumbers() {
@@ -32,14 +32,19 @@ public class PhoneBookServiceImpl implements PhoneBookService {
     }
 
     @Override
-    public PhoneBooksDto createPhoneNumber(Integer userId, NumberInPhoneBookDto number) {
+    public void createPhoneNumber(Integer userId, NumberInPhoneBookDto number) {
         Integer id = phoneNumberId.incrementAndGet();
-        phoneBooksDto.setPhoneBookId(userId);
+        number.setRecordId(id);
+        PhoneBooksDto dto = new PhoneBooksDto();
+        dto.setPhoneBookId(userId);
+        dto.addIntoMap(userId,number);
         numberInPhoneBookDtoMap.put(id,number);
-        phoneBooksDto.setNumberInPhoneBookDtoMap(numberInPhoneBookDtoMap);
-        userService.getUser(userId).setPhoneBooksDtoMap(phoneBooksDtoMap);
-        phoneBooksDtoMap.put(userId,phoneBooksDto);
-        return phoneBooksDto;
+        System.out.println(numberInPhoneBookDtoMap);
+
+        phoneBooksDtoMap.put(userId,dto);
+        userService.getUser(userId).addIntoUsers(userId,phoneBooksDtoMap.get(userId));
+
+
     }
 
 

@@ -9,7 +9,7 @@ public interface PhoneBookService {
 
     public List<PhoneBooksDto> getAllPhoneNumbers();
     public PhoneBooksDto getPhoneNumber(Integer userId);
-    public PhoneBooksDto createPhoneNumber(Integer userId, NumberInPhoneBookDto phoneNumber);
+    public void createPhoneNumber(Integer userId, NumberInPhoneBookDto phoneNumber);
     public Boolean deletePhone(Integer userId);
     public void editPhone(Integer userId);
 
