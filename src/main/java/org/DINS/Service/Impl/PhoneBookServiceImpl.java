@@ -35,11 +35,10 @@ public class PhoneBookServiceImpl implements PhoneBookService {
     public PhoneBooksDto createPhoneNumber(Integer userId, NumberInPhoneBookDto number) {
         Integer id = phoneNumberId.incrementAndGet();
         phoneBooksDto.setPhoneBookId(userId);
-        phoneBooksDtoMap.put(userId,phoneBooksDto);
-        number.setRecordId(id);
         numberInPhoneBookDtoMap.put(id,number);
         phoneBooksDto.setNumberInPhoneBookDtoMap(numberInPhoneBookDtoMap);
         userService.getUser(userId).setPhoneBooksDtoMap(phoneBooksDtoMap);
+        phoneBooksDtoMap.put(userId,phoneBooksDto);
         return phoneBooksDto;
     }
 
