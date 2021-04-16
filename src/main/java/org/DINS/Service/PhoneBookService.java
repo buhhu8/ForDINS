@@ -1,16 +1,16 @@
 package org.DINS.Service;
 
-import org.DINS.model.dto.NumberInPhoneBookDto;
 import org.DINS.model.dto.PhoneBooksDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PhoneBookService {
 
-    public List<PhoneBooksDto> getAllPhoneNumbers();
-    public PhoneBooksDto getPhoneNumber(Integer userId);
-    public void createPhoneNumber(Integer userId, NumberInPhoneBookDto phoneNumber);
-    public Boolean deletePhone(Integer userId);
+    public Map<Integer, PhoneBooksDto> getAllPhoneNumbers(Integer userId);
+    public PhoneBooksDto getPhoneNumber(Integer userId, Integer numberId);
+    public void createPhoneNumber(Integer userId, PhoneBooksDto phoneNumber);
+    public Boolean deletePhone(Integer userId, Integer numberId);
     public void editPhone(Integer userId);
 
 

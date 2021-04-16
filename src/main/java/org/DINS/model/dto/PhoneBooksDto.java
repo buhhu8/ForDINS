@@ -1,20 +1,18 @@
 package org.DINS.model.dto;
 
 import lombok.Data;
-import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.HashMap;
 import java.util.Map;
 
 @Data
 public class PhoneBooksDto {
 
-    Integer phoneBookId;
-
-    Map<Integer,NumberInPhoneBookDto> numberInPhoneBookDtoMap = new HashMap<Integer, NumberInPhoneBookDto>();
-
-    public void addIntoMap(Integer id, NumberInPhoneBookDto dto){
-        numberInPhoneBookDtoMap.put(id,dto);
-    }
+    private Integer recordId;
+    @NotEmpty(message = "Number could not be empty")
+    @Size(min=11, max = 11, message = "Number must have 11 characters")
+    private String phoneNumber;
 
 }
