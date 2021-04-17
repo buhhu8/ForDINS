@@ -1,16 +1,19 @@
 package org.DINS.model.dto;
 
 import lombok.Data;
-import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.HashMap;
 import java.util.Map;
 
 @Data
-@Setter
 public class PhoneBooksDto {
 
-    Integer phoneBookId;
-    Map<Integer,NumberInPhoneBookDto> numberInPhoneBookDtoMap = new HashMap<Integer, NumberInPhoneBookDto>();
+    private Integer recordId;
+    @Size(min=11, max = 11, message = "Number must have 11 characters")
+    @Pattern(regexp = "^[0-9]+$")
+    private String phoneNumber;
 
 }
