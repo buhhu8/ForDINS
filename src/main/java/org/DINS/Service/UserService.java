@@ -1,17 +1,37 @@
 package org.DINS.Service;
 
+import org.DINS.model.dto.UserDto;
+import org.DINS.model.dto.UserWithoutPhoneBookDto;
 
-import org.DINS.model.dto.UsersDto;
-
+import java.util.Collection;
 import java.util.Map;
 
 public interface UserService {
 
-    public Map<Integer, String> getAllUsers();
-    public UsersDto getUser(Integer userId);
-    public UsersDto createUser(UsersDto usersDto);
-    public Boolean deleteUser(Integer userId);
-    public UsersDto editUser(Integer userId, UsersDto dto);
-    public Map<Integer, String> findByName(String name);
+    /**
+     * Returns list of all users without phones
+     * @return list of users
+     */
+    Collection<UserWithoutPhoneBookDto> getAllUsers();
+
+    /**
+     * Finds user by passed ID
+     *
+     * @param userId the indentifier of user to find
+     * @return user with phones
+     * @throws org.DINS.exception.UserNotFoundException if no user with such ID
+     */
+    UserDto getUser(Integer userId);
+
+    //
+    /**/
+
+    UserDto createUser(UserDto userDto);
+
+    Boolean deleteUser(Integer userId);
+
+    UserDto editUser(Integer userId, UserDto dto);
+
+    Collection<UserWithoutPhoneBookDto> findByName(String name);
 
 }

@@ -1,16 +1,16 @@
 package org.DINS.Service;
 
-import org.DINS.model.dto.PhoneBooksDto;
+import org.DINS.model.dto.PhoneBookRecordDto;
 
 import java.util.Map;
 
 public interface PhoneBookService {
 
-    public Map<Integer, PhoneBooksDto> getAllPhoneNumbers(Integer userId);
-    public PhoneBooksDto getPhoneNumber(Integer userId, Integer numberId);
-    public Boolean createPhoneNumber(Integer userId, PhoneBooksDto phoneNumber);
+    public Map<Integer, PhoneBookRecordDto> getAllPhoneNumbers(Integer userId);
+    public PhoneBookRecordDto getPhoneNumber(Integer userId, Integer numberId);
+    public Boolean createPhoneNumber(Integer userId, PhoneBookRecordDto phoneNumber);
     public Boolean deletePhone(Integer userId, Integer numberId);
-    public Boolean editPhone(Integer userId, Integer phoneNumber, PhoneBooksDto dto);
+    public Boolean editPhone(Integer userId, Integer phoneNumber, PhoneBookRecordDto dto);
     public Map<Integer,String> findByNumber(String number);
 
 

@@ -9,9 +9,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
-public class PhoneBooksDto {
+public class PhoneBookRecordDto {
 
     private Integer recordId;
+    private String name;
+    private String lastName;
     @Size(min=11, max = 11, message = "Number must have 11 characters")
     @Pattern(regexp = "^[0-9]+$")
     private String phoneNumber;

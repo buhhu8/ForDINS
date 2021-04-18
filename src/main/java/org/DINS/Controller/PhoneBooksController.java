@@ -1,15 +1,13 @@
 package org.DINS.Controller;
 
-import ch.qos.logback.core.pattern.util.RegularEscapeUtil;
 import lombok.RequiredArgsConstructor;
 import org.DINS.Service.Impl.PhoneBookServiceImpl;
-import org.DINS.model.dto.PhoneBooksDto;
+import org.DINS.model.dto.PhoneBookRecordDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -20,7 +18,7 @@ public class PhoneBooksController {
     private final PhoneBookServiceImpl phoneBookService;
 
     @PostMapping("/{userId}")
-    public ResponseEntity<?> createPhone(@PathVariable Integer userId, @RequestBody @Valid PhoneBooksDto number){
+    public ResponseEntity<?> createPhone(@PathVariable Integer userId, @RequestBody @Valid PhoneBookRecordDto number){
         if(phoneBookService.createPhoneNumber(userId, number))
         {
              return new ResponseEntity<>(HttpStatus.OK);
@@ -31,7 +29,7 @@ public class PhoneBooksController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<?> getAllPhonesByUserId(@PathVariable Integer userId){
-        Map<Integer, PhoneBooksDto> allPhoneNumbers = phoneBookService.getAllPhoneNumbers(userId);
+        Map<Integer, PhoneBookRecordDto> allPhoneNumbers = phoneBookService.getAllPhoneNumbers(userId);
         if(allPhoneNumbers.get(1)!=null){
             return new ResponseEntity<>(allPhoneNumbers,HttpStatus.OK);
         }
@@ -40,7 +38,7 @@ public class PhoneBooksController {
 
     @GetMapping("/{userId}/{numberId}")
     public ResponseEntity<?> getPhoneById(@PathVariable Integer userId, @PathVariable Integer numberId){
-        PhoneBooksDto phoneNumber = phoneBookService.getPhoneNumber(userId, numberId);
+        PhoneBookRecordDto phoneNumber = phoneBookService.getPhoneNumber(userId, numberId);
         try{
             if(phoneNumber.getPhoneNumber()!=null)
             {
@@ -64,7 +62,7 @@ public class PhoneBooksController {
     @PutMapping("/{userId}/{numberId}")
     public ResponseEntity<?> editPhoneById(@PathVariable Integer userId,
                                            @PathVariable Integer numberId,
-                                           @RequestBody @Valid PhoneBooksDto dto){
+                                           @RequestBody @Valid PhoneBookRecordDto dto){
 
         if(phoneBookService.editPhone(userId, numberId, dto)){
             return new ResponseEntity<>(dto,HttpStatus.OK);

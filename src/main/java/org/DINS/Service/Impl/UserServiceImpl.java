@@ -2,43 +2,42 @@ package org.DINS.Service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import org.DINS.Service.UserService;
-import org.DINS.findMethod.FindByName;
-import org.DINS.model.dto.UsersDto;
+import org.DINS.exception.UserNotFoundException;
+import org.DINS.model.dto.UserDto;
+import org.DINS.model.dto.UserWithoutPhoneBookDto;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final AtomicInteger userId = new AtomicInteger();
-    private final Map<Integer, UsersDto> usersMap = new HashMap<>();
+    private final Map<Integer, UserDto> usersMap = new HashMap<>();
 
     @Override
-    public Map<Integer, String> getAllUsers() {
-        Map<Integer, String> resultMap = new HashMap<>();
-        for (Map.Entry<Integer, UsersDto> entry : usersMap.entrySet()) {
-            resultMap.put(entry.getKey(), entry.getValue().getUserName());
-        }
-        return resultMap;
-
+    public Collection<UserWithoutPhoneBookDto> getAllUsers() {
+        return usersMap.entrySet().stream()
+                .map(entry -> new UserWithoutPhoneBookDto(entry.getKey(), entry.getValue().getUserName()))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public UsersDto getUser(Integer id) {
+    public UserDto getUser(Integer id) {
         return usersMap.get(id);
-
     }
 
     @Override
-    public UsersDto createUser(UsersDto usersDto) {
-        final Integer id = userId.incrementAndGet();
-        usersDto.setUserId(id);
-        usersMap.put(id, usersDto);
-        return usersDto;
+    public UserDto createUser(UserDto userDto) {
+        Integer id = userId.incrementAndGet();
+        userDto.setUserId(id);
+        usersMap.put(id, userDto);
+        return userDto;
     }
 
     @Override
@@ -51,29 +50,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UsersDto editUser(Integer userId, UsersDto dto) {
-        UsersDto usersDto = usersMap.get(userId);
-        try {
-            usersDto.setUserName(dto.getUserName());
-            usersMap.put(userId, usersDto);
-            return usersDto;
-        } catch (NullPointerException exc) {
-            return new UsersDto();
+    public UserDto editUser(Integer userId, UserDto dto) {
+        UserDto userDto = usersMap.get(userId);
+        if (userDto == null) {
+             throw new UserNotFoundException(userId);
         }
+
+        userDto.setUserName(dto.getUserName());
+        usersMap.put(userId, userDto);
+        return userDto;
     }
 
     @Override
-    public Map<Integer, String> findByName(String name) {
-        FindByName find = new FindByName();
-        Map<Integer, String> resultMap = new HashMap<>();
-        String foundName;
-        for (Map.Entry<Integer, UsersDto> entry : usersMap.entrySet()) {
-            foundName = entry.getValue().getUserName();
-            if (find.getNameFirstEntry(foundName, name) != -1) {
-                resultMap.put(entry.getKey(), entry.getValue().getUserName());
-            }
-        }
-        return resultMap;
+    public Collection<UserWithoutPhoneBookDto> findByName(String name) {
+        return usersMap.entrySet().stream()
+                .filter(entry -> entry.getValue().getUserName().contains(name))
+                .map(entry -> new UserWithoutPhoneBookDto(entry.getKey(), entry.getValue().getUserName()))
+                .collect(Collectors.toList());
     }
 
 
