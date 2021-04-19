@@ -1,7 +1,8 @@
-package org.DINS.exception.handler;
+package org.dins.exception.handler;
 
-import org.DINS.exception.UserNotFoundException;
-import org.DINS.model.dto.ErrorMessageDto;
+import org.dins.exception.NumberNotFoundException;
+import org.dins.exception.UserNotFoundException;
+import org.dins.model.dto.ErrorMessageDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,4 +42,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, errorMessageDto, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
+    @ExceptionHandler(NumberNotFoundException.class)
+    public ResponseEntity<Object> handleNumberNotFoundException(NumberNotFoundException ex,
+                                                                    WebRequest request) {
+        ErrorMessageDto errorMessageDto = new ErrorMessageDto(HttpStatus.BAD_REQUEST.value(),ex.getMessage());
+        return handleExceptionInternal(ex, errorMessageDto, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
 }

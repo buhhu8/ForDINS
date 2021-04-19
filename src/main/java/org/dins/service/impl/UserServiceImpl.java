@@ -1,10 +1,10 @@
-package org.DINS.Service.Impl;
+package org.dins.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.DINS.Service.UserService;
-import org.DINS.exception.UserNotFoundException;
-import org.DINS.model.dto.UserDto;
-import org.DINS.model.dto.UserWithoutPhoneBookDto;
+import org.dins.service.UserService;
+import org.dins.exception.UserNotFoundException;
+import org.dins.model.dto.UserDto;
+import org.dins.model.dto.UserWithoutPhoneBookDto;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;

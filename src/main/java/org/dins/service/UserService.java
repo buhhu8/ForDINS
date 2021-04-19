@@ -1,10 +1,9 @@
-package org.DINS.Service;
+package org.dins.service;
 
-import org.DINS.model.dto.UserDto;
-import org.DINS.model.dto.UserWithoutPhoneBookDto;
+import org.dins.model.dto.UserDto;
+import org.dins.model.dto.UserWithoutPhoneBookDto;
 
 import java.util.Collection;
-import java.util.Map;
 
 public interface UserService {
 
@@ -19,7 +18,7 @@ public interface UserService {
      *
      * @param userId the indentifier of user to find
      * @return user with phones
-     * @throws org.DINS.exception.UserNotFoundException if no user with such ID
+     * @throws org.dins.exception.UserNotFoundException if no user with such ID
      */
     UserDto getUser(Integer userId);
 

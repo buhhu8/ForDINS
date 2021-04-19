@@ -1,4 +1,4 @@
-package org.DINS;
+package org.dins;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

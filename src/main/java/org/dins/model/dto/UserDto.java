@@ -1,4 +1,4 @@
-package org.DINS.model.dto;
+package org.dins.model.dto;
 
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import java.util.Map;
 public class UserDto {
 
     private Integer userId;
-    @NotEmpty(message = "User name couldn't be empty")
+    @NotEmpty(message = "User firstName couldn't be empty")
     @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+$")
     private String userName;
     private Map<Integer, PhoneBookRecordDto> phoneBook;

@@ -1,10 +1,10 @@
-package org.DINS.Controller;
+package org.dins.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.DINS.Service.Impl.UserServiceImpl;
-import org.DINS.exception.UserNotFoundException;
-import org.DINS.model.dto.UserDto;
-import org.DINS.model.dto.UserWithoutPhoneBookDto;
+import org.dins.service.impl.UserServiceImpl;
+import org.dins.exception.UserNotFoundException;
+import org.dins.model.dto.UserDto;
+import org.dins.model.dto.UserWithoutPhoneBookDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -58,7 +58,7 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public Collection<UserWithoutPhoneBookDto> findName(@RequestParam("name") String name) {
+    public Collection<UserWithoutPhoneBookDto> findName(@RequestParam("firstName") String name) {
         return userService.findByName(name);
     }
 }

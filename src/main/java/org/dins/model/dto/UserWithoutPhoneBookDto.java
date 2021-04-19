@@ -1,4 +1,4 @@
-package org.DINS.model.dto;
+package org.dins.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

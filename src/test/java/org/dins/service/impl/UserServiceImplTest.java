@@ -1,7 +1,6 @@
-package org.DINS.Service.IMpl;
+package org.dins.service.impl;
 
-import org.DINS.Service.Impl.UserServiceImpl;
-import org.DINS.model.dto.UserDto;
+import org.dins.model.dto.UserDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

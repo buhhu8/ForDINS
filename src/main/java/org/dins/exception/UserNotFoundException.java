@@ -1,4 +1,4 @@
-package org.DINS.exception;
+package org.dins.exception;
 
 public class UserNotFoundException extends RuntimeException {
 

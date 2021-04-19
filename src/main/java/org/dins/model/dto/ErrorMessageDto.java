@@ -1,6 +1,5 @@
-package org.DINS.model.dto;
+package org.dins.model.dto;
 
-import lombok.Data;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

@@ -1,7 +1,7 @@
-package org.DINS.Service.IMpl.contoller;
+package org.dins.service.impl.contoller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.DINS.model.dto.UserDto;
+import org.dins.model.dto.UserDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
