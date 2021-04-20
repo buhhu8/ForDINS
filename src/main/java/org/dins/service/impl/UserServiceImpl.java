@@ -29,6 +29,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUser(Integer id) {
+        UserDto user = usersMap.get(id);
+        if(user==null){
+            throw new UserNotFoundException(id);
+        }
         return usersMap.get(id);
     }
 
@@ -64,7 +68,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Collection<UserWithoutPhoneBookDto> findByName(String name) {
         return usersMap.entrySet().stream()
-                .filter(entry -> entry.getValue().getUserName().contains(name))
+                .filter(entry -> entry.getValue().getUserName().toLowerCase().contains(name.toLowerCase()))
                 .map(entry -> new UserWithoutPhoneBookDto(entry.getKey(), entry.getValue().getUserName()))
                 .collect(Collectors.toList());
     }

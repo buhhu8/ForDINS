@@ -8,13 +8,13 @@ import java.util.Collection;
 public interface UserService {
 
     /**
-     * Returns list of all users without phones
+     * Return list of all users without phones
      * @return list of users
      */
     Collection<UserWithoutPhoneBookDto> getAllUsers();
 
     /**
-     * Finds user by passed ID
+     * Find user by passed ID
      *
      * @param userId the indentifier of user to find
      * @return user with phones
@@ -22,14 +22,39 @@ public interface UserService {
      */
     UserDto getUser(Integer userId);
 
-    //
-    /**/
+    /**
+     * Create new user
+     *
+     * @param userDto send via JSON userName
+     * @return created DTO with userId and UserName
+     */
 
     UserDto createUser(UserDto userDto);
 
+    /**
+     * Delete user by ID
+     *
+     * @param userId the indentifier of user to delete
+     * @return true if deleted success
+     */
     Boolean deleteUser(Integer userId);
 
+    /**
+     * Edit user by passed userId
+     *
+     * @param userId the indentifier of user to edit
+     * @param dto the UserDto which replace our user
+     * @return edited DTO
+     */
+
     UserDto editUser(Integer userId, UserDto dto);
+
+    /**
+     * Find users record by name or part of name
+     *
+     * @param name the indentifier of user to find
+     * @return list of all found users
+     */
 
     Collection<UserWithoutPhoneBookDto> findByName(String name);
 
