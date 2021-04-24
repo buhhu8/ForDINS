@@ -38,6 +38,9 @@ public class PhoneBookServiceImpl implements PhoneBookService {
         if (user == null) {
             throw new UserNotFoundException(userId);
         }
+        if(user.getPhoneBook().get(numberId)==null){
+            throw new NumberNotFoundException(numberId);
+        }
         return user.getPhoneBook().get(numberId);
     }
 
@@ -58,7 +61,7 @@ public class PhoneBookServiceImpl implements PhoneBookService {
     public Boolean deletePhone(Integer userId, Integer numderId) {
         PhoneBookRecordDto user = getPhoneNumber(userId, numderId);
         if (user == null) {
-            return false;
+            throw new NumberNotFoundException(numderId);
         }
         userService.getUser(userId).getPhoneBook().remove(numderId);
         return true;
