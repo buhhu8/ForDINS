@@ -13,15 +13,16 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.springframework.context.annotation.Lazy;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -36,26 +37,24 @@ class PhoneBookServiceImplTest {
     @Test
     @DisplayName("getAllPhoneNumbers: Should return list with all numbers")
     public void testGetAllPhoneNumbers_userExists_returnListWithUsers() {
-
         when(userService.getUser(1)).thenReturn(initialize());
-        assertNotNull(phoneBookService.getAllPhoneNumbers(1));
 
+        Collection<PhoneBookRecordDto> result = phoneBookService.getAllPhoneNumbers(1);
+        assertNotNull(result);
     }
 
     @Test
     @DisplayName("getAllPhoneNumbers: Should throw exception if user does not exist")
     public void testGetAllPhoneNumbers_userDoesNotExist_phoneBookNull_returnException() {
-
         assertThrows(UserNotFoundException.class, () -> phoneBookService.getAllPhoneNumbers(1));
-
     }
 
     @Test
     @DisplayName("getPhoneNumber: Should return record in phone book for user")
     public void testGetPhoneNumber_userExistsPhoneExists_returnPhoneNumber() {
-
         PhoneBookRecordDto expectedResult = createPhoneBookDto();
         when(userService.getUser(1)).thenReturn(initialize());
+
         PhoneBookRecordDto result = phoneBookService.getPhoneNumber(1, 1);
         assertEquals(expectedResult, result);
     }
@@ -63,114 +62,97 @@ class PhoneBookServiceImplTest {
     @Test
     @DisplayName("getPhoneNumber: Should throw UserNotFoundException")
     public void testGetPhoneNumber_userDoesNotExist_returnException() {
-
         assertThrows(UserNotFoundException.class, () -> phoneBookService.getPhoneNumber(1, 1));
-
     }
 
     @Test
     @DisplayName("getPhoneNumber: Should return NumberNotFoundException")
     public void testGetPhoneNumber_userExistsPhoneNumberDoesNotExist_returnException() {
-
         when(userService.getUser(1)).thenReturn(initialize());
-        assertThrows(NumberNotFoundException.class, () -> phoneBookService.getPhoneNumber(1, 21));
 
+        assertThrows(NumberNotFoundException.class, () -> phoneBookService.getPhoneNumber(1, 21));
     }
 
     @Test
     @DisplayName("createPhoneNumber: Should throw UserNotFoundException")
     public void testCreatePhoneNumber_userDoesNotExist_returnException() {
-
         assertThrows(UserNotFoundException.class, () -> phoneBookService.getPhoneNumber(1, 1));
-
     }
 
 
     @Test
     @DisplayName("createPhoneNumber: Should create new phone")
     public void testCreatePhoneNumber_userDoesExists() {
-
         when(userService.getUser(1)).thenReturn(initialize());
-        phoneBookService.createPhoneNumber(1, createPhoneBookDto());
-        verify(userService,times(3)).getUser(1);
 
+        phoneBookService.createPhoneNumber(1, createPhoneBookDto());
+        verify(userService).getUser(1);
     }
 
     @Test
     @DisplayName("deletePhone: Should throw UserNotFoundException")
     public void testDeletePhone_userDoesNotExist_returnException() {
-
         assertThrows(UserNotFoundException.class, () -> phoneBookService.deletePhone(1, 1));
-
     }
 
     @Test
     @DisplayName("deletePhone: Should throw NumberNotFoundException")
     public void testDeletePhone_userExistsPhoneNumberDoesNotExist_returnException() {
-
         when(userService.getUser(1)).thenReturn(initialize());
-        assertThrows(NumberNotFoundException.class, () -> phoneBookService.deletePhone(1, 21));
 
+        assertThrows(NumberNotFoundException.class, () -> phoneBookService.deletePhone(1, 21));
     }
 
     @Test
     @DisplayName("deletePhone: Should return true if user and number exists")
     public void testDeletePhone_UserExistsPhoneExists_returnTrue(){
-
         when(userService.getUser(1)).thenReturn(initialize());
-        assertTrue(phoneBookService.deletePhone(1,1));
 
+        assertTrue(phoneBookService.deletePhone(1,1));
     }
 
     @Test
     @DisplayName("editPhone: Should throw UserNotFoundException")
     public void testEditPhone_userDoesNotExist_returnException() {
-
         assertThrows(UserNotFoundException.class, () -> phoneBookService.editPhone(1, 1,createPhoneBookDto()));
-
     }
 
     @Test
     @DisplayName("editPhone: Should throw NumberNotFoundException")
     public void testEditPhone_userExistsPhoneNumberDoesNotExist_returnException() {
-
         when(userService.getUser(1)).thenReturn(initialize());
-        assertThrows(NumberNotFoundException.class, () -> phoneBookService.editPhone(1, 21, createPhoneBookDto()));
 
+        assertThrows(NumberNotFoundException.class, () -> phoneBookService.editPhone(1, 21, createPhoneBookDto()));
     }
 
     @Test
     @DisplayName("editPhone: Should edit phoneBook")
     public void testEditPhone_userExistsPhoneExists(){
-
         when(userService.getUser(1)).thenReturn(initialize());
+
         phoneBookService.editPhone(1,1,createPhoneBookDto());
 
-        verify(userService,times(3)).getUser(1);
-
+        verify(userService).getUser(1);
     }
 
     @Test
     @DisplayName("findByNumber: Should throw UserNotFoundException")
     public void testFindByNumber_userDoesNotExist_returnException() {
-
         assertThrows(UserNotFoundException.class, () -> phoneBookService.findByNumber(1, "234"));
-
     }
 
 
     @Test
     @DisplayName("findByNumber: Should return all phone numbers which contains part of number")
     public void testFindByNumber_userExists_returnAllFindNumber(){
-
         PhoneBookRecordDto dto = createPhoneBookDto();
-        Collection<PhoneBookRecordDto> expectedResult = new ArrayList<>();
-        expectedResult.add(dto);
-        when(userService.getUser(1)).thenReturn(initialize());
-        Collection<PhoneBookRecordDto> result = phoneBookService.findByNumber(1,"963");
-        assertEquals(expectedResult,result);
-    }
+        Collection<PhoneBookRecordDto> expectedResult = Collections.singletonList(dto);
 
+        when(userService.getUser(1)).thenReturn(initialize());
+
+        Collection<PhoneBookRecordDto> result = phoneBookService.findByNumber(1,"963");
+        assertEquals(expectedResult, result);
+    }
 
     public UserDto initialize() {
         UserDto dto = new UserDto();
@@ -187,7 +169,6 @@ class PhoneBookServiceImplTest {
         dto.setLastName("Dorofeev");
         return dto;
     }
-
 
 }
 

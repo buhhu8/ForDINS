@@ -38,7 +38,12 @@ public class PhoneBookServiceImpl implements PhoneBookService {
         if (user == null) {
             throw new UserNotFoundException(userId);
         }
-        if(user.getPhoneBook().get(numberId)==null){
+
+        // PhoneBookRecordDto numberDto = user.getPhoneBook().get(numberId);
+        // if () { throw }
+        // return numberDto;
+
+        if(user.getPhoneBook().get(numberId) == null) {
             throw new NumberNotFoundException(numberId);
         }
         return user.getPhoneBook().get(numberId);
@@ -50,11 +55,11 @@ public class PhoneBookServiceImpl implements PhoneBookService {
         if (user == null) {
             throw new UserNotFoundException(userId);
         }
-        Integer id = userService.getUser(userId).getPhoneBook().size();
+        Integer id = user.getPhoneBook().size();
         id = id + 1;
         phoneBookRecordDto.setRecordId(id);
         numberInPhoneBookDtoMap.put(id, phoneBookRecordDto);
-        userService.getUser(userId).addPhone(id, numberInPhoneBookDtoMap.get(id));
+        user.addPhone(id, numberInPhoneBookDtoMap.get(id));
     }
 
     @Override
@@ -70,16 +75,17 @@ public class PhoneBookServiceImpl implements PhoneBookService {
 
     @Override
     public void editPhone(Integer userId, Integer numberId, PhoneBookRecordDto dto) {
-        if (userService.getUser(userId) == null) {
+        UserDto user = userService.getUser(userId);
+        if (user == null) {
             throw new UserNotFoundException(userId);
         }
-        if(userService.getUser(userId).getPhoneBook().get(numberId)== null){
+        if(user.getPhoneBook().get(numberId)== null){
             throw new NumberNotFoundException(numberId);
         }
         dto.setRecordId(numberId);
         numberInPhoneBookDtoMap.put(numberId, dto);
-        userService.getUser(userId).addPhone(numberId, numberInPhoneBookDtoMap.get(numberId));
 
+        user.addPhone(numberId, numberInPhoneBookDtoMap.get(numberId));
     }
 
     @Override
