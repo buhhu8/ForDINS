@@ -1,4 +1,4 @@
-package org.dins.service.impl.contoller;
+package org.dins.contoller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.dins.model.dto.UserDto;
