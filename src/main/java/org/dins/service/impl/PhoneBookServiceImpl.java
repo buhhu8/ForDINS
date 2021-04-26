@@ -60,9 +60,6 @@ public class PhoneBookServiceImpl implements PhoneBookService {
     @Override
     public Boolean deletePhone(Integer userId, Integer numderId) {
         PhoneBookRecordDto user = getPhoneNumber(userId, numderId);
-        if (user == null) {
-            throw new NumberNotFoundException(numderId);
-        }
         userService.getUser(userId).getPhoneBook().remove(numderId);
         return true;
 
