@@ -76,7 +76,7 @@ class PhoneBookServiceImplTest {
     @Test
     @DisplayName("createPhoneNumber: Should throw UserNotFoundException")
     public void testCreatePhoneNumber_userDoesNotExist_returnException() {
-        assertThrows(UserNotFoundException.class, () -> phoneBookService.getPhoneNumber(1, 1));
+        assertThrows(UserNotFoundException.class, () -> phoneBookService.createPhoneNumber(22,new PhoneBookRecordDto()));
     }
 
 
@@ -92,7 +92,7 @@ class PhoneBookServiceImplTest {
     @Test
     @DisplayName("deletePhone: Should throw UserNotFoundException")
     public void testDeletePhone_userDoesNotExist_returnException() {
-        assertThrows(UserNotFoundException.class, () -> phoneBookService.deletePhone(1, 1));
+        assertThrows(UserNotFoundException.class, () -> phoneBookService.deletePhone(1, 221));
     }
 
     @Test
@@ -100,7 +100,7 @@ class PhoneBookServiceImplTest {
     public void testDeletePhone_userExistsPhoneNumberDoesNotExist_returnException() {
         when(userService.getUser(1)).thenReturn(initialize());
 
-        assertThrows(NumberNotFoundException.class, () -> phoneBookService.deletePhone(1, 21));
+        assertThrows(NumberNotFoundException.class, () -> phoneBookService.deletePhone(1, 221));
     }
 
     @Test
