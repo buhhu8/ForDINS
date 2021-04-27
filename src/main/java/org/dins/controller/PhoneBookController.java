@@ -11,14 +11,7 @@ import org.dins.model.dto.PhoneBookRecordDto;
 import org.dins.service.impl.PhoneBookServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -36,7 +29,7 @@ public class PhoneBookController {
     @ApiOperation(value = "Record phone number in phone book")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "OK"),
-            @ApiResponse(code = 400, response = ErrorMessageDto.class, message = "\"phoneNumber\": \"должно соответствовать \\\"^[0-9]+$\\\"\" or \"phoneNumber\": \"Number must have 11 characters\"")
+            @ApiResponse(code = 400, response = ErrorMessageDto.class, message = "Bad Request")
     })
     @PostMapping("/{userId}")
     public ResponseEntity<?> createPhone(@PathVariable Integer userId, @RequestBody @Valid PhoneBookRecordDto number) {
@@ -47,18 +40,33 @@ public class PhoneBookController {
 
 
     @GetMapping("/{userId}")
+    @ApiOperation(value = "Get all phone numbers for user by userId")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, response = ErrorMessageDto.class, message = "Bad Request")
+    })
     public Collection<PhoneBookRecordDto> getAllPhonesByUserId(@PathVariable Integer userId) {
 
         return phoneBookService.getAllPhoneNumbers(userId);
     }
 
     @GetMapping("/{userId}/{numberId}")
+    @ApiOperation(value = "Get phone number for user by userId and numberId")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, response = ErrorMessageDto.class, message = "Bad Request")
+    })
     public PhoneBookRecordDto getPhoneById(@PathVariable Integer userId, @PathVariable Integer numberId) {
 
         return phoneBookService.getPhoneNumber(userId, numberId);
     }
 
     @DeleteMapping("/{userId}/{numberId}")
+    @ApiOperation(value = "Delete phone number for user by userId and numberId")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, response = ErrorMessageDto.class, message = "Bad Request")
+    })
     public ResponseEntity<?> deletePhoneById(@PathVariable Integer userId, @PathVariable Integer numberId) {
 
         if (phoneBookService.deletePhone(userId, numberId)) {
@@ -68,6 +76,11 @@ public class PhoneBookController {
     }
 
     @PutMapping("/{userId}/{numberId}")
+    @ApiOperation(value = "Edit phone number for user by userId and numberId")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, response = ErrorMessageDto.class, message = "Bad Request")
+    })
     public ResponseEntity<?> editPhoneById(@PathVariable Integer userId,
                                            @PathVariable Integer numberId,
                                            @RequestBody @Valid PhoneBookRecordDto dto) {
@@ -76,8 +89,12 @@ public class PhoneBookController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @GetMapping({"/find/{userId}/{findNumber}"})
-    public Collection<PhoneBookRecordDto> findByNumber(@PathVariable Integer userId, @PathVariable String findNumber) {
+    @GetMapping({"/search/{userId}"})
+    @ApiOperation(value = "Find all phone number for user by userId and number or part of number")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+    })
+    public Collection<PhoneBookRecordDto> findByNumber(@PathVariable Integer userId, @RequestParam("findNumber")  String findNumber) {
 
         return phoneBookService.findByNumber(userId, findNumber);
     }

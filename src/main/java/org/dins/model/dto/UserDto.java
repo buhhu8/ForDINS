@@ -1,5 +1,6 @@
 package org.dins.model.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -10,10 +11,15 @@ import java.util.Map;
 @Data
 public class UserDto {
 
+    @ApiModelProperty(name = "userId", value = "unique id in userDto. Doesn't send, auto increment")
     private Integer userId;
+
+    @ApiModelProperty(name = "userName", value = "For example: Anton. Couldn't be empty. Russian and English languages only")
     @NotEmpty(message = "User firstName couldn't be empty")
     @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+$")
     private String userName;
+
+    @ApiModelProperty(name = "phoneBook", value = "Map for storage PhoneBookRecordDto")
     private Map<Integer, PhoneBookRecordDto> phoneBook;
 
     public UserDto() {
