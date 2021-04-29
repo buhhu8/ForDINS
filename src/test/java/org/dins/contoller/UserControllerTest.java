@@ -71,7 +71,13 @@ public class UserControllerTest {
     @Test
     @DisplayName(value = "createUser: Should create new user")
     public void testCreateUser_userValid_returnNewUser() throws  Exception{
-        MvcResult userCreationResult = initialize();
+        MvcResult userCreationResult = mockMvc.perform(
+                post("/api/v1/users/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"userName\": \"Denis\"}")
+        )
+                .andExpect(status().isOk())
+                .andReturn();
         UserDto user = objectMapper.readValue(userCreationResult.getResponse().getContentAsString(), UserDto.class);
         Assertions.assertFalse(user.getUserName().isEmpty());
 
@@ -87,11 +93,8 @@ public class UserControllerTest {
         )
                 .andExpect(status().isBadRequest())
                 .andReturn();
-        String result = userCreation.getResponse().getContentAsString();
-        Assertions.assertTrue(result.contains("User firstName couldn't be empty"));
+       }
 
-    }
-//!!!!!!!!!!!!
     @Test
     @DisplayName(value = "createUser: Should return error if user not valid")
     public void testCreateUser_userDoesNotValid_returnError() throws Exception{
@@ -102,28 +105,79 @@ public class UserControllerTest {
         )
                 .andExpect(status().isBadRequest())
                 .andReturn();
-        String result = userCreation.getResponse().getContentAsString();
-        Assertions.assertTrue(result.contains("User firstName couldn't be empty"));
 
     }
 
     @Test
     @DisplayName(value = "deleteUser: Should return 200 if user was deleted")
     public void testDeleteUser_userExists_returnOk() throws Exception{
-        MvcResult userCreation = initialize();
-        MvcResult expectedResult = mockMvc.perform(delete("/api/v1/users/1"))
+        initialize();
+        mockMvc.perform(delete("/api/v1/users/1"))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        String result = expectedResult.getResponse().getContentAsString();
-        UserDto result2 = objectMapper.readValue( userCreation.getResponse().getContentAsString(), UserDto.class);
-        Assertions.assertTrue(result.isEmpty());
-        Assertions.assertTrue(result2.getUserName().isEmpty());
-
     }
 
+    @Test
+    @DisplayName(value = "deleteUser: Should return 404 if user doesn't exist")
+    public void testDeleteUser_userDoesNotExist_returnNotFound() throws Exception{
+        mockMvc.perform(delete("/api/v1/users/1222"))
+                .andExpect(status().isNotFound())
+                .andReturn();
+    }
 
+    @Test
+    @DisplayName(value = "editUser: Should return 200 if user exists and editUser")
+    public void testEditUser_userExistsAndValid_returnOK() throws Exception{
+        MvcResult creationResult = initialize();
+        MvcResult expectedResult = mockMvc.perform(
+                put("/api/v1/users/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"userName\": \"Anton\"}")
+        )
+                .andExpect(status().isOk())
+                .andReturn();
+        UserDto result = objectMapper.readValue(expectedResult.getResponse().getContentAsString(),UserDto.class);
+        Assertions.assertTrue(result.getUserName().contains("Anton"));
+    }
 
+    @Test
+    @DisplayName(value = "editUser: Should return 400 if user doesn't exist")
+    public void testEditUser_userDoesNotExist_returnError() throws Exception{
+
+        MvcResult result = mockMvc.perform(
+                put("/api/v1/users/1323")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"userName\": \"Anton\"}")
+        )
+                .andExpect(status().isBadRequest())
+                .andReturn();
+    }
+
+    @Test
+    @DisplayName(value = "editUser: Should return 400 if data not valid")
+    public void testEditUser_userExistsAndDataNotValid_returnError() throws Exception{
+        MvcResult result = mockMvc.perform(
+                put("/api/v1/users/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"userName\": \"Ant23on\"}")
+        )
+                .andExpect(status().isBadRequest())
+                .andReturn();
+    }
+
+    @Test
+    @DisplayName(value = "findName: Should return all found users")
+    public void testFindName_userExists_returnListofUsers() throws Exception{
+
+        initialize();
+        MvcResult expectedResult = mockMvc.perform(get("/api/v1/users/search/").param("firstName","Den"))
+                .andExpect(status().isOk())
+                .andReturn();
+        UserWithoutPhoneBookDto result = objectMapper.readValue(expectedResult.getResponse().getContentAsString(),UserWithoutPhoneBookDto.class);
+        Assertions.assertFalse(result.getUserName().isEmpty());
+
+    }
 
 
     public MvcResult initialize() throws Exception{
