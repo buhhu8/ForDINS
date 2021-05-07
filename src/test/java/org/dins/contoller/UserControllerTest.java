@@ -160,11 +160,12 @@ public class UserControllerTest {
     @DisplayName(value = "findName: Should return all found users")
     public void testFindName_userExists_returnListofUsers() throws Exception {
         initialize();
-        MvcResult expectedResult = mockMvc.perform(get("/api/v1/users/search/").param("firstName", "Den"))
+        MvcResult expectedResult = mockMvc.perform(get("/api/v1/users/search/")
+                .param("firstName", "Den"))
                 .andExpect(status().isOk())
                 .andReturn();
         String result = expectedResult.getResponse().getContentAsString();
-        Assertions.assertFalse(result.isEmpty());
+        Assertions.assertTrue(result.contains("Denis"));
     }
 
 
